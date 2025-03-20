@@ -1,0 +1,55 @@
+# NAMD Config file 
+
+# input
+coordinates             cyclohexane.pdb
+structure               cyclohexane.psf
+parameters              par_all35_ethers.prm
+paratypecharmm          on
+
+# output 
+set output              myfirstrun
+outputname              $output
+dcdfile                 ${output}.dcd
+xstFile                 ${output}.xst
+dcdfreq                 1000
+xstFreq                 1000
+
+binaryoutput            no
+binaryrestart           no
+outputEnergies          1000
+restartfreq             1000
+
+fixedAtoms              off
+
+# Basic dynamics (we never edit the below set)
+exclude                 scaled1-4
+1-4scaling              1
+COMmotion               no
+dielectric              1.0
+
+# Simulation space partitioning (we will learn more about the below set later in the semester)
+switching               on
+switchdist              9
+cutoff                  10
+pairlistdist            12
+
+# Multiple timestepping (we do not edit the below set at this time)
+firsttimestep           0
+timestep                1
+stepspercycle           20
+nonbondedFreq           2
+fullElectFrequency      4
+
+# Temperature control (measure in K)
+
+set temperature         100
+temperature             $temperature;  # initial temperature
+langevin on
+langevinDamping 10
+langevinTemp $temperature
+
+# Scripting
+
+minimize            1000
+reinitvels          $temperature
+run                 10000000
